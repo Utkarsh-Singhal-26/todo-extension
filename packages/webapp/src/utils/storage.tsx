@@ -1,6 +1,6 @@
 const setStorage = (key: string, value: any): Promise<void> => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.set({ [key]: value }, () => {
+    chrome.storage.sync.set({ [key]: value }, () => {
       if (chrome.runtime.lastError) {
         reject(chrome.runtime.lastError);
       } else {
@@ -12,7 +12,7 @@ const setStorage = (key: string, value: any): Promise<void> => {
 
 const getStorage = (key: string): Promise<any> => {
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get(key, (result) => {
+    chrome.storage.sync.get(key, (result) => {
       if (chrome.runtime.lastError) {
         reject(chrome.runtime.lastError);
       } else {
