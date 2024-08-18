@@ -28,15 +28,17 @@ const Board = () => {
 
   useEffect(() => {
     if (hasChecked) {
-      setStorage("cards", cards);
+      setStorage("cards", cards).catch((error) => console.error(error));
     }
   }, [cards, hasChecked]);
 
   useEffect(() => {
-    getStorage("cards").then((cardData) => {
-      setCards(cardData ? cardData : []);
-      setHasChecked(true);
-    });
+    getStorage("cards")
+      .then((cardData) => {
+        setCards(cardData ? cardData : []);
+        setHasChecked(true);
+      })
+      .catch((error) => console.error(error));
   }, []);
 
   return (
