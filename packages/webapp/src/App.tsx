@@ -95,6 +95,8 @@ const Board = () => {
       <BurnBarrel setCards={setCards} />
 
       {JSON.stringify(chrome, null, 2)}
+      <br />
+      <h1>chrome.runtime</h1>
       {JSON.stringify(chrome.runtime, null, 2)}
     </div>
   );
