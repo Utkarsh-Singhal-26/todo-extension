@@ -1,4 +1,4 @@
-import { useState, useEffect, DragEvent, FormEvent } from "react";
+import { useState, DragEvent, FormEvent } from "react";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -12,7 +12,8 @@ import type {
   ColumnProps,
   DropIndicatorProps,
 } from "./utils/interfaces";
-import { getStorage, setStorage } from "./utils/storage";
+// import { sendMessageToExtension } from "./utils/storage";
+// import { getStorage, setStorage } from "./utils/storage";
 
 const App = () => {
   return (
@@ -24,22 +25,41 @@ const App = () => {
 
 const Board = () => {
   const [cards, setCards] = useState<CardType[]>([]);
-  const [hasChecked, setHasChecked] = useState<boolean>(false);
+  // const [hasChecked, setHasChecked] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (hasChecked) {
-      setStorage("cards", cards).catch((error) => console.error(error));
-    }
-  }, [cards, hasChecked]);
+  // useEffect(() => {
+  //   if (hasChecked) {
+  //     setStorage("cards", cards).catch((error) => console.error(error));
+  //   }
+  // }, [cards, hasChecked]);
 
-  useEffect(() => {
-    getStorage("cards")
-      .then((cardData) => {
-        setCards(cardData ? cardData : []);
-        setHasChecked(true);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+  // useEffect(() => {
+  //   getStorage("cards")
+  //     .then((cardData) => {
+  //       setCards(cardData ? cardData : []);
+  //       setHasChecked(true);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, []);
+
+  // useEffect(() => {
+  //   sendMessageToExtension({ type: "GET_STORAGE", key: "cards" })
+  //     .then((response) => {
+  //       setCards(response || []);
+  //       setHasChecked(true);
+  //     })
+  //     .catch((error) => console.error(error));
+  // }, []);
+
+  // useEffect(() => {
+  //   if (hasChecked) {
+  //     sendMessageToExtension({
+  //       type: "SET_STORAGE",
+  //       key: "cards",
+  //       data: cards,
+  //     }).catch((error) => console.error(error));
+  //   }
+  // }, [cards, hasChecked]);
 
   return (
     <div className="flex h-full w-full gap-3 p-12">
@@ -73,6 +93,9 @@ const Board = () => {
       />
 
       <BurnBarrel setCards={setCards} />
+
+      {JSON.stringify(chrome, null, 2)}
+      {JSON.stringify(chrome.runtime, null, 2)}
     </div>
   );
 };
