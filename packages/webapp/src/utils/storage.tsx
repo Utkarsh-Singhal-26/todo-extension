@@ -69,28 +69,28 @@
 //   });
 // };
 
-interface Message {
-  type: string;
-  key?: string;
-  data?: any;
-}
+// interface Message {
+//   type: string;
+//   key?: string;
+//   data?: any;
+// }
 
-export const sendMessageToExtension = (message: Message): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    // console.log(message);
-    // console.log(chrome.runtime);
-    // if (!chrome?.runtime?.id) {
-    //   console.error("This function must be called from a Chrome extension environment.");
-    //   reject("Not a Chrome extension environment.");
-    //   return;
-    // }
+// export const sendMessageToExtension = (message: Message): Promise<any> => {
+//   return new Promise((resolve, reject) => {
+//     console.log(message);
+//     console.log(chrome.runtime);
+//     if (!chrome?.runtime?.id) {
+//       console.error("This function must be called from a Chrome extension environment.");
+//       reject("Not a Chrome extension environment.");
+//       return;
+//     }
 
-    // chrome.runtime.sendMessage(message, (response) => {
-    //   if (chrome.runtime.lastError) {
-    //     reject(chrome.runtime.lastError.message);
-    //   } else {
-    //     resolve(response);
-    //   }
-    // });
-  });
-};
+//     chrome.runtime.sendMessage(message, (response) => {
+//       if (chrome.runtime.lastError) {
+//         reject(chrome.runtime.lastError.message);
+//       } else {
+//         resolve(response);
+//       }
+//     });
+//   });
+// };
