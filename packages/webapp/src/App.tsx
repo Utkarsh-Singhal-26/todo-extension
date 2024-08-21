@@ -15,7 +15,9 @@ import type {
 
 const App = () => {
   return (
-    <div className="h-screen w-full bg-neutral-900 text-neutral-50">
+    <div className="h-screen w-full p-12 bg-neutral-900 text-neutral-50 overflow-y-hidden">
+      <h1 className="font-bold text-4xl text-center mb-3">TODO WebApp (uses Extension Storage)</h1>
+      <hr className="mb-12 rounded-xl bg-white h-0.5" />
       <Board />
     </div>
   );
@@ -26,17 +28,31 @@ const Board = () => {
   const [hasChecked, setHasChecked] = useState<boolean>(false);
 
   useEffect(() => {
-    hasChecked && localStorage.setItem("cards", JSON.stringify(cards));
+    hasChecked && window.postMessage({ type: "SYNC_TODOS", todos: cards }, "*");
   }, [cards]);
 
   useEffect(() => {
-    const cardData = localStorage.getItem("cards");
-    setCards(cardData ? JSON.parse(cardData) : []);
-    setHasChecked(true);
+    const handleMessage = (event: MessageEvent) => {
+      if (event.source !== window) return;
+
+      if (event.data.type === "FROM_EXTENSION") {
+        if (Array.isArray(event.data?.todos)) {
+          setCards(event.data.todos);
+        }
+        setHasChecked(true);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    window.postMessage({ type: "GET_TODOS" }, "*");
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
   }, []);
 
   return (
-    <div className="flex h-full w-full gap-3 p-12">
+    <div className="h-full w-full gap-12 grid grid-cols-5">
       <Column
         title="Backlog"
         column="backlog"
@@ -175,7 +191,7 @@ const Column = ({
   };
 
   return (
-    <div className="w-56 shrink-0">
+    <div className="shrink-0 w-full">
       <div className="mb-3 flex items-center justify-between">
         <h3 className={`font-medium ${headingColor}`}>{title}</h3>
         <span className="rounded text-sm text-neutral-400">
@@ -258,7 +274,7 @@ const BurnBarrel = ({ setCards }: BurnBarrelProps) => {
       onDrop={handleDragEnd}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      className={`mt-10 grid h-56 w-56 shrink-0 place-content-center rounded border text-3xl ${
+      className={`mt-10 grid h-56 w-full shrink-0 place-content-center rounded border text-3xl ${
         active
           ? "border-red-800 bg-red-800/20 text-red-500"
           : "border-neutral-500 bg-neutral-500/20 text-neutral-500"
