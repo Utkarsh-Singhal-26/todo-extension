@@ -19,9 +19,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-
-    /* Chrome Types */
-    "types": ["chrome"]
   },
   "include": ["src"]
 }
