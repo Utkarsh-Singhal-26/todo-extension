@@ -4,16 +4,37 @@
   "version": "1.0.0",
   "description": "A simple ToDo extension",
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": "icon-48.png"
+  },
+  "icons": {
+    "48": "icon-48.png"
   },
   "background": {
     "service_worker": "assets/service_worker.js"
   },
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["activeTab", "storage", "scripting"],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["assets/content_script.js"]
+      "matches": [
+        "https://todo-extension-one.vercel.app/*",
+        "https://silver-fiesta-v46966994j72w7gx-5173.app.github.dev/*"
+      ],
+      "js": ["assets/content_script.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "host_permissions": [
+    "https://todo-extension-one.vercel.app/*",
+    "https://silver-fiesta-v46966994j72w7gx-5173.app.github.dev/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/content_script.js"],
+      "matches": [
+        "https://todo-extension-one.vercel.app/*",
+        "https://silver-fiesta-v46966994j72w7gx-5173.app.github.dev/*"
+      ]
     }
   ]
 }

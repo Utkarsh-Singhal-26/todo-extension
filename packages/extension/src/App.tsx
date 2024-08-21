@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import "./App.css";
 
 interface CardType {
@@ -16,11 +15,7 @@ interface ColumnProps {
 }
 
 const App = () => {
-  const [cards, setCards] = useState<CardType[]>([
-    { id: "1", title: "First card", column: "backlog" },
-    { id: "2", title: "Second card", column: "todo" },
-    { id: "3", title: "Third card", column: "doing" },
-  ]);
+  const [cards, setCards] = useState<CardType[]>([]);
 
   useEffect(() => {
     const getStorage = (key: string): Promise<any> => {
@@ -29,16 +24,16 @@ const App = () => {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError);
           } else {
-            resolve(result[key]);
+            resolve(result[key] || []);
           }
         });
       });
     };
 
-    getStorage("cards")
-      .then((cardData) => setCards(cardData ? cardData : []))
+    getStorage("todos")
+      .then((cardData) => setCards(cardData))
       .catch(console.error);
-  }, [cards]);
+  }, []);
 
   return (
     <div className="h-full max-h-[500px] w-[400px] bg-neutral-900 text-neutral-50 p-4 overflow-y-scroll">
@@ -50,7 +45,7 @@ const App = () => {
       />
       <Column
         title="ToDo"
-        headingColor="text-yello-500"
+        headingColor="text-yellow-500"
         column="todo"
         cards={cards}
       />
@@ -58,6 +53,12 @@ const App = () => {
         title="In progress"
         headingColor="text-blue-500"
         column="doing"
+        cards={cards}
+      />
+      <Column
+        title="Complete"
+        column="done"
+        headingColor="text-emerald-200"
         cards={cards}
       />
     </div>
